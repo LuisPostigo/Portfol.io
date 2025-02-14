@@ -49,6 +49,9 @@ def process_files():
     resume_path = resume_entry.get()
     job_path = job_entry.get()
 
+    output_dir = os.path.join(os.getcwd(), "datasets", "pre-processed")
+    os.makedirs(output_dir, exist_ok=True)
+
     # Exception 1: Are both files paths provided?
     if not resume_path or not job_path:
         messagebox.showwarning("Input Error", "Please upload both Resume and Job Posting.")
@@ -61,12 +64,11 @@ def process_files():
 
     resume_text = extract_text_from_pdf(resume_path)
     job_text = extract_text_from_pdf(job_path)
-
-    # Creates resume.txt and jobPosting.txt files for both uploaded files.
-    with open("resume.txt", "w") as resume_file:
+    
+    with open(os.path.join(output_dir, "resume.txt"), "w") as resume_file:
         resume_file.write(resume_text)
     
-    with open("jobPosting.txt", "w") as job_file:
+    with open(os.path.join(output_dir, "jobPosting.txt"), "w") as job_file:
         job_file.write(job_text)
 
     messagebox.showinfo("Success!", f"Resume and Job Posting received:\nResume: {resume_path}\nJob Posting: {job_path}")
