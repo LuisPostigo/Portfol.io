@@ -1,102 +1,99 @@
+import os
+from subprocess import call
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import os
-import fitz  # this does the PyMuPDF for PDF extraction
+from tkinterdnd2 import DND_FILES, TkinterDnD
 
-def clean_text(text):
-    """Cleans the text by removing excessive blank lines."""
-    lines = text.split('\n')
-    cleaned_lines = []
-    blank_count = 0
-    for line in lines:
-        if line.strip() == "":
-            blank_count += 1
+from pre_processing import process_files
+
+class DragDropFiles:
+    def __init__(self, root):
+        """Initialize the GUI elements for the application."""
+        self.root = root
+        self.root.title("Portfol.io")
+        self.root.geometry("600x600")
+        self.cwd = os.getcwd()
+
+        self.resume_files = {}
+        self.job_files = {}
+
+        self.setup_resume_interface()
+        self.setup_job_interface()
+        self.setup_process_button()
+
+    def setup_resume_interface(self):
+        """Sets up the interface for resume file input."""
+        resume_label = tk.Label(self.root, text="Drag and Drop Resumes Here or Browse:")
+        resume_label.pack(pady=5)
+        self.resume_text = tk.Text(self.root, height=10, width=50)
+        self.resume_text.pack(pady=5)
+        self.resume_text.drop_target_register(DND_FILES)
+        self.resume_text.dnd_bind('<<Drop>>', self.drop_resume)
+        resume_browse_button = tk.Button(self.root, text="Browse Resumes", command=self.browse_resume)
+        resume_browse_button.pack(pady=5)
+
+    def setup_job_interface(self):
+        """Sets up the interface for job posting file input."""
+        job_label = tk.Label(self.root, text="Drag and Drop Job Postings Here or Browse:")
+        job_label.pack(pady=5)
+        self.job_text = tk.Text(self.root, height=10, width=50)
+        self.job_text.pack(pady=5)
+        self.job_text.drop_target_register(DND_FILES)
+        self.job_text.dnd_bind('<<Drop>>', self.drop_job_posting)
+        job_browse_button = tk.Button(self.root, text="Browse Job Postings", command=self.browse_job_posting)
+        job_browse_button.pack(pady=5)
+
+    def setup_process_button(self):
+        """Creates a button to process the input files."""
+        process_button = tk.Button(self.root, text="Process Files", command=self.gui_process_files, bg="green", fg="white")
+        process_button.pack(pady=20)
+
+    def drop_resume(self, event):
+        """Handles dropping resume files into the text box."""
+        files = self.root.tk.splitlist(event.data)
+        for file in files:
+            filename = os.path.basename(file)
+            self.resume_text.insert(tk.END, f"• {filename}\n")
+            self.resume_files[file] = 'resume'
+
+    def drop_job_posting(self, event):
+        """Handles dropping job posting files into the text box."""
+        files = self.root.tk.splitlist(event.data)
+        for file in files:
+            filename = os.path.basename(file)
+            self.job_text.insert(tk.END, f"• {filename}\n")
+            self.job_files[file] = 'job_posting'
+
+    def browse_resume(self):
+        """Opens a file dialog to browse and select resume files."""
+        file_paths = filedialog.askopenfilenames(title="Select Resumes", filetypes=[("PDF files", "*.pdf"), ("Text files", "*.txt")])
+        for path in file_paths:
+            filename = os.path.basename(path)
+            self.resume_text.insert(tk.END, f"• {filename}\n")
+            self.resume_files[path] = 'resume'
+
+    def browse_job_posting(self):
+        """Opens a file dialog to browse and select job posting files."""
+        file_paths = filedialog.askopenfilenames(title="Select Job Postings", filetypes=[("PDF files", "*.pdf"), ("Text files", "*.txt")])
+        for path in file_paths:
+            filename = os.path.basename(path)
+            self.job_text.insert(tk.END, f"• {filename}\n")
+            self.job_files[path] = 'job_posting'
+
+    def gui_process_files(self):
+        """Processes all collected files and provides user feedback."""
+        all_files = [{'file_path': path, 'file_type': self.resume_files[path]} for path in self.resume_files]
+        all_files += [{'file_path': path, 'file_type': self.job_files[path]} for path in self.job_files]
+
+        if all_files:
+            process_files(all_files)
+            messagebox.showinfo("Success!", "Files processed and sorted into respective folders successfully.")
         else:
-            blank_count = 0
-        if blank_count < 2:
-            cleaned_lines.append(line)
-    return '\n'.join(cleaned_lines)
-
-def extract_text_from_pdf(pdf_path):
-    """Extracts text from the given PDF file."""
-    try:
-        doc = fitz.open(pdf_path)
-        text = "".join(page.get_text() for page in doc)
-        return text.strip()
-    except Exception as e:
-        return f"Error extracting PDF content: {e}"
-    
-def browse_resume():
-    """Opens a file dialog to select a resume file."""
-    file_path = filedialog.askopenfilename(title="Select Resume", 
-                                           filetypes=[("PDF files", "*.pdf"),       # so far it supports pdf files
-                                                       ("Text files", "*.txt")])    # and text files
-    if file_path:
-        resume_entry.delete(0, tk.END)
-        resume_entry.insert(0, file_path)
-
-def browse_job_posting():
-    """Opens a file dialog to select a job posting file."""
-    file_path = filedialog.askopenfilename(title="Select Job Posting", 
-                                           filetypes=[("PDF files", "*.pdf"), 
-                                                      ("Text files", "*.txt")])
-    if file_path:
-        job_entry.delete(0, tk.END)
-        job_entry.insert(0, file_path)
-
-def process_files():
-    """Processes the uploaded resume and job posting. handling error scenarios."""
-    resume_path = resume_entry.get()
-    job_path = job_entry.get()
-
-    output_dir = os.path.join(os.getcwd(), "datasets", "pre-processed")
-    os.makedirs(output_dir, exist_ok=True)
-
-    # Exception 1: Are both files paths provided?
-    if not resume_path or not job_path:
-        messagebox.showwarning("Input Error", "Please upload both Resume and Job Posting.")
-        return
-    
-    # Exception 2: Do the files exist?
-    if not os.path.exists(resume_path) or not os.path.exists(job_path):
-        messagebox.showerror("File Error", "One or both files do not exist.")
-        return
-
-    resume_text = extract_text_from_pdf(resume_path)
-    job_text = extract_text_from_pdf(job_path)
-    
-    with open(os.path.join(output_dir, "resume.txt"), "w") as resume_file:
-        resume_file.write(resume_text)
-    
-    with open(os.path.join(output_dir, "jobPosting.txt"), "w") as job_file:
-        job_file.write(job_text)
-
-    messagebox.showinfo("Success!", f"Resume and Job Posting received:\nResume: {resume_path}\nJob Posting: {job_path}")
-    messagebox.showinfo("Extraction Complete", "Information extracted and saved to 'resume.txt' and 'jobPosting.txt'")
-
-####################################################################################
-#                                  GUI Setup                                       #
-####################################################################################
-
-root = tk.Tk()
-root.title("Recruiter Agent: Resume & Job Posting Uploader")
-root.geometry("500x300")
-root.resizable(False, False)
-
-# Resume
-tk.Label(root, text="Upload Resume:").pack(pady=5)
-resume_entry = tk.Entry(root, width=50)
-resume_entry.pack(pady=5)
-tk.Button(root, text="Browse", command=browse_resume).pack(pady=5)
-
-# Job Posting
-tk.Label(root, text="Upload Job Posting:").pack(pady=5)
-job_entry = tk.Entry(root, width=50)
-job_entry.pack(pady=5)
-tk.Button(root, text="Browse", command=browse_job_posting).pack(pady=5)
-
-# Submit Button
-tk.Button(root, text="Process Files", command=process_files, bg="green", fg="white").pack(pady=20)
+            messagebox.showwarning("Input Error", "Please upload at least one file.")
 
 if __name__ == "__main__":
+    root = TkinterDnD.Tk()
+    app = DragDropFiles(root)
     root.mainloop()
+
+    call(["python", "pre_processing/applicants2KIF.py"])
