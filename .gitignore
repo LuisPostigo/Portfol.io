@@ -1,0 +1,64 @@
+# === PYTHON ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+*.pyo
+*.pyd
+*.pdb
+*.pyc
+*.log
+
+# Virtual environment
+portfol_io/
+
+# === NODE/REACT ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+build/
+.cache/
+.next/
+
+# === ENV / SECRETS ===
+.env
+.env.*.local
+*.env
+
+# === SYSTEM FILES ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === VSCODE ===
+.vscode/
+.idea/
+
+# === COVERAGE / TEST ===
+coverage/
+*.lcov
+
+# === TEMP FILES ===
+*.swp
+*.bak
+*.tmp
+*.orig
+
+# === OUTPUT ===
+*.out
+*.log
+*.db
+
+# === JUPYTER ===
+.ipynb_checkpoints/
+
+# === SPECIFIC FILES ===
+04_11_25_Class_Update.pptx
+backend/huggingFace_model_Test.py
+backend/sensible_info.py
+backend/plot_LLM_performance_comparison.py
+
+# === MODELS ===
+backend/models/*.gguf
