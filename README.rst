@@ -110,18 +110,21 @@ Evaluation focuses on individual agent accuracy and false positive/negative rate
 Pending Work
 ------------
 
-- Implementing advanced portfolio scraping and evaluation.
-- GUI visualization for agent interactions.
-- Integration of a final Decision Agent capable of nuanced negotiation and decision-making.
-- Bias mitigation techniques and explainability mechanisms.
+- Finalizing advanced portfolio scraping, including GitHub repository analysis and technical signal extraction.
+- Enhanced GUI visualization for multi-agent evaluation, including dynamic radar charts and heatmap-based fit scores.
+- Completion of the FourthTechnicalLeadAgent integration for consensus building and final evaluation arbitration.
+- Optimizing backend pipelines for asynchronous agent communication using RabbitMQ and message tracking.
+- Incorporating explainability features per agent (score justification, transcript highlights).
 
 Challenges
 ----------
 
-- Lack of publicly available datasets combining resumes and portfolios.
-- Ambiguity in defining skill proficiency and job requirements.
-- Balancing LLM computational cost with system performance.
-- Ensuring scalability when multiple agents query shared LLM models.
+- Ensuring reliable message passing and synchronization across multiple agents using RabbitMQ.
+- Interpreting and normalizing varied resume and portfolio data into structured evaluation formats.
+- Managing and scaling LLM resources (local vs cloud inference) for concurrent agent queries.
+- Implementing real-time feedback loops and debate summaries in a computationally efficient way.
+- Debugging multi-agent pipelines due to intermittent state mismatches or processing order drift.
+
 
 References
 ----------
