@@ -31,6 +31,10 @@ Portfol.io addresses these challenges by:
 System Overview
 ----------------
 
+.. image:: docs/img/Animation.gif
+   :alt: System Overview Animation
+   :align: center
+
 The MAS is composed of six primary agents, each with a specialized role:
 
 - **Recruiter Agent:** Parses resumes and extracts key information using NLP.
@@ -77,6 +81,10 @@ Architecture
 
 Key Technologies
 -----------------
+
+.. image:: docs/img/Animation2.gif
+   :alt: Key Technologies Demo
+   :align: center
 
 - **Large Language Models:** phi-2.Q4_K_M & DeepSeek Coder
 - **Messaging Framework:** RabbitMQ
