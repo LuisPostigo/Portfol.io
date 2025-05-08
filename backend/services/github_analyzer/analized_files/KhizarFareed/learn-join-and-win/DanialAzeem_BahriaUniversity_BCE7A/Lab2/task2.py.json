@@ -1,0 +1,4 @@
+{
+  "file": "DanialAzeem_BahriaUniversity_BCE7A/Lab2/task2.py",
+  "result": "{\n   \"Python\":  {\"depth\": 8,  \"coverage\": true},\n   \"Object-Oriented Programming\":  {\"depth\": 8,  \"coverage\": true},\n   \"Error Handling\":  {\"depth\": 5,  \"coverage\": true},\n   \"Regular Expressions\":  {\"depth\": 6,  \"coverage\": true},\n   \"String Manipulation\":  {\"depth\": 7,  \"coverage\": true},\n   \"For Loops\":  {\"depth\": 4,  \"coverage\": true}\n}\n\nEXPLANATION:\nThe Python script counts the number of lowercase, uppercase, digits, and special symbols in a given string. The OOP and error handling skills are well-demonstrated. Regular expressions and string manipulation methods are used in the code, with specific focus on for loops."
+}

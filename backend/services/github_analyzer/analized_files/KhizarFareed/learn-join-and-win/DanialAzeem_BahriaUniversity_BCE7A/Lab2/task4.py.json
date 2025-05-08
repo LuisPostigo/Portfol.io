@@ -1,0 +1,4 @@
+{
+  "file": "DanialAzeem_BahriaUniversity_BCE7A/Lab2/task4.py",
+  "result": "The Python function `diff__largest_and_smallest` takes a list of integers as input and returns an integer. It calculates the difference between the largest and smallest values in the list. The function is also checking if the list has less than 1 element. If it does, it returns 0. The function uses Python's built-in `min` and `max` functions to find the smallest and largest values, respectively. The function then returns the difference between these two values. \n\nIn the code example, the result of the function call is 5. This indicates that the difference is 5, which is the difference between the largest and smallest value in the given list [4, 2, 9, 7, 5]."
+}

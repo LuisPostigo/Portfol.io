@@ -1,0 +1,4 @@
+{
+  "file": "src/index.js",
+  "result": "### JSON EVAL:\n{\n   \"React\":  {\"depth\": 8, \"coverage\": true},\n   \"ReactDOM\":  {\"depth\": 7, \"coverage\": true}\n}\n\n### EXPLANATION:\nReact is a JavaScript library for building user interfaces, specifically for single-page applications. It is used for handling the view layer, which means you put it all together to get a result.\nReactDOM is a JavaScript library for rendering React elements to a static HTML markup. It is used for the view layer.\n\n---"
+}

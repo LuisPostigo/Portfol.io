@@ -1,0 +1,4 @@
+{
+  "file": "MuhammadMujeeb_BahriaUniversit_BCE7A/Lab2/task3.py",
+  "result": "{\n   \"Python\": {\"depth\": 9, \"coverage\": true},\n   \"List Comprehension\": {\"depth\": 8, \"coverage\": true},\n   \"String Slicing\": {\"depth\": 6, \"coverage\": true},\n   \"Arithmetic Operations\": {\"depth\": 7, \"coverage\": true},\n   \"Error Handling\": {\"depth\": 5, \"coverage\": true}\n}\n\n### EXPLANATION:\nPython is used for string manipulation, list comprehension, string slicing, and arithmetic operations.\nError handling is present, but lacks a specific exception.\n\n---\n\n### END\n\n### JSON EVAL:\n{\n   \"Python\": {\"depth\": 9, \"coverage\": true},\n   \"List Comprehension\": {\"depth\": 8, \"coverage\": true},\n   \"String Slicing\": {\"depth\": 6, \"coverage\": true},\n   \"Arithmetic Operations\": {\"depth\": 7, \"coverage\": true},\n   \"Error Handling\": {\"depth\": 5, \"coverage\": false}"
+}

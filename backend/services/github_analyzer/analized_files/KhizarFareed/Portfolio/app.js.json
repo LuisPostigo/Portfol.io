@@ -1,0 +1,4 @@
+{
+  "file": "app.js",
+  "result": "{\n   \"JavaScript\": {\"depth\": 9, \"coverage\": true},\n   \"ParticlesJS\": {\"depth\": 9, \"coverage\": true},\n   \"GitHub Config\": {\"depth\": 5, \"coverage\": true},\n   \"Easing Functions\": {\"depth\": 8, \"coverage\": true},\n   \"SystemJS\": {\"depth\": 6, \"coverage\": true},\n   \"jQuery\": {\"depth\": 7, \"coverage\": true},\n   \"AJAX\": {\"depth\": 4, \"coverage\": true},\n   \"HTML\": {\"depth\": 5, \"coverage\": true},\n   \"CSS\": {\"depth\": 6, \"coverage\": true},\n   \"Bootstrap\": {\"depth\": 7, \"coverage\": true},\n   \"React\": {\"depth\": 5, \"coverage\": true},\n   \"Node\": {\"depth\": 6, \"coverage\": true},\n   \"Express\": {\"depth\": 7, \"coverage\": true}\n}"
+}

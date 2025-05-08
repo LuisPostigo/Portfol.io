@@ -1,0 +1,4 @@
+{
+  "file": "DanialAzeem_BahriaUniversity_BCE7A/Lab2/task3.py",
+  "result": "{\n   \"Python\":  {\"depth\": 6,  \"coverage\": true},\n   \"String Manipulation\":  {\"depth\": 5,  \"coverage\": true},\n   \"For Loop\":  {\"depth\": 4,  \"coverage\": true},\n   \"If Statement\":  {\"depth\": 3,  \"coverage\": true},\n   \"Variables\":  {\"depth\": 3,  \"coverage\": true},\n   \"Arithmetic Operations\":  {\"depth\": 3,  \"coverage\": true}\n}\n\n### EXPLANATION:\nThe function `calculate_sum_and_average_of_digits` takes a string as input and returns the sum and average of the digits in it.\n\nThe function uses a for loop to iterate through each character in the input string. It checks if a character is a digit using the `isdigit()` method. If a character is a digit, it adds the digit to the `digit_sum` and increments `digit_count`.\n\nAfter the loop finishes, it checks if `digit_count` is"
+}

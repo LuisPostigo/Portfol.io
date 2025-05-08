@@ -12,7 +12,7 @@ class AgentBase:
         """
         target_agent = message.get("target_agent")
         if target_agent is None:
-            # ✨ Allow non-targeted messages by default
+
             return True
         if target_agent != self.expected_agent_name:
             print(f"⚠️ Message for '{target_agent}', not '{self.expected_agent_name}'. Skipping.")

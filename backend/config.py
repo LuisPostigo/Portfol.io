@@ -14,6 +14,14 @@ MATCHES_DB_PATH = os.path.join(BASE_DIR, "databases", "matches.db")
 
 # - Upload directories -
 MODEL_DIR =  os.path.join(BASE_DIR, 'models')
+FOUNDATION_MODEL = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
+CODING_MODEL = "deepseek-coder-1.3b-instruct.Q4_K_M.gguf"
+
+# - Repo Analysis directories -
+REPO_ANALYSIS_DIR = os.path.join(BASE_DIR, 'services', 'github_analyzer')
+ANALYZE_EACH_SCRIPT_BACKGROUND_DIR = os.path.join(REPO_ANALYSIS_DIR, 'main.py')
+REPO_STRUCTURE = os.path.join(REPO_ANALYSIS_DIR, 'github_structure_scraper.py')
+REPO_SUMMARY_ASSESSMENT = os.path.join(REPO_ANALYSIS_DIR, 'analizes_a_repo.py')
 
 # - Agent directories -
 RECRUITER_AGENT_DIR = os.path.join(BASE_DIR, 'agents', "first_recruiter_agent.py")

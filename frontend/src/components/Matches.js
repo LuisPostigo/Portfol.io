@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import AgentTabs from './AgentTabs';
 
 const Matches = () => {
   const [jobs, setJobs] = useState([]);
@@ -86,217 +87,6 @@ const Matches = () => {
     return `Applicant`; // fallback if no name found
   };
 
-  const renderAgentTabs = () => {
-    if (!matchDetails) return <p>Select an applicant to view evaluation.</p>;
-
-    const parsedRecruiter = parseEvaluation(matchDetails.recruiter_agent);
-    const parsedHiringManager = parseEvaluation(matchDetails.hiring_manager_agent);
-
-    const getFinalRecommendation = (rawText) => {
-      if (!rawText) return 'Unknown';
-      const lowered = rawText.toLowerCase();
-      if (lowered.includes('final recommendation: **yes**') || lowered.includes('final recommendation: yes')) {
-        return 'Yes';
-      }
-      if (lowered.includes('final recommendation: **no**') || lowered.includes('final recommendation: no')) {
-        return 'No';
-      }
-      return 'Unknown';
-    };
-
-    const recruiterDecision = getFinalRecommendation(matchDetails.recruiter_agent);
-    const managerDecision = getFinalRecommendation(matchDetails.hiring_manager_agent);
-
-    const getBannerStyle = (decision) => {
-      if (decision === 'Yes') return styles.greenBanner;
-      if (decision === 'No') return styles.redBanner;
-      return styles.grayBanner;
-    };
-
-    const handleViewDebate = () => {
-      setDebateData(matchDetails.debate_transcript);
-      setDebateOpen(true);
-    };    
-    
-    const extractOverallScore = (text) => {
-        if (!text) return 5; // Neutral if no text
-        
-        const lines = text.split(/\n+/).filter(Boolean);
-        
-        for (const line of lines) {
-          if (line.toLowerCase().includes('overall')) {
-            const match = line.match(/(\d+)\/10/i);
-            if (match) {
-              return parseInt(match[1]);
-            }
-          }
-        }
-        
-        return 5; // Default if no score found
-      };
-      
-    const buildRadarData = () => {
-        const data = [];
-      
-        if (matchDetails.recruiter_agent) {
-          const score = extractOverallScore(matchDetails.recruiter_agent);
-          data.push({ agent: 'Recruiter Agent', score });
-        }
-        
-        if (matchDetails.hiring_manager_agent) {
-          const score = extractOverallScore(matchDetails.hiring_manager_agent);
-          data.push({ agent: 'Hiring Manager Agent', score });
-        }
-      
-        // ✨ Later you can add more agents like:
-        // if (matchDetails.engineering_lead_agent) { ... }
-        // if (matchDetails.hr_agent) { ... }
-      
-        return data;
-      };     
-    
-      const renderDebateButton = () => {
-        if (!matchDetails) return null;
-      
-        const hasDebate =
-          matchDetails &&
-          matchDetails.debate_transcript &&
-          matchDetails.debate_transcript.length > 0;
-
-      
-        return (
-          <div style={{ textAlign: 'center', marginTop: '15px', marginBottom: '25px' }}>
-            <button
-              style={hasDebate ? styles.debateButton : styles.disabledDebateButton}
-              disabled={!hasDebate}
-              onClick={hasDebate ? handleViewDebate : undefined}
-            >
-              {hasDebate ? "View Debate" : "No Debate: Agents Agreed"}
-            </button>
-          </div>
-        );
-      }; 
-      
-    /* ---------- popup modal ------------------------------------ */
-    const renderDebateModal = () =>
-      debateOpen && debateData && (
-        <div style={styles.overlay}>
-          <div style={styles.modal}>
-            {/* close button */}
-            <button style={styles.closeBtn} onClick={() => setDebateOpen(false)}>
-              ×
-            </button>
-
-            {/* winner banner */}
-            {matchDetails.debate_winner && (
-              <div style={{ ...styles.bannerBase, ...styles.greenBanner, marginBottom: 12 }}>
-                Debate Winner:&nbsp;
-                {matchDetails.debate_winner.toLowerCase().includes("recruiter")
-                  ? "Recruiter Agent"
-                  : "Hiring Manager Agent"}
-              </div>
-            )}
-
-            <h3 style={styles.modalTitle}>Debate Transcript</h3>
-
-            <div style={styles.chatArea}>
-              {debateData.slice(2).map((entry, idx) => {
-                const isRecruiter = entry.source.toLowerCase().includes("recruiter");
-                const cleanText = entry.text.replace(/"/g, "");   // strip quotes
-                return (
-                  <div
-                    key={idx}
-                    style={{
-                      ...styles.bubbleBase,
-                      ...(isRecruiter ? styles.leftBubble : styles.rightBubble),
-                    }}
-                  >
-                    <strong>{entry.source.replace("Agent", "")}: </strong>
-                    {cleanText}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      );
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <div style={styles.tabsContainer}>
-            <div
-                style={{ ...styles.tab, ...(activeTab === 'Summary' ? styles.activeTab : {}) }}
-                onClick={() => setActiveTab('Summary')}
-            >
-                Summary
-            </div>
-            <div
-                style={{ ...styles.tab, ...(activeTab === 'Recruiter Agent' ? styles.activeTab : {}) }}
-                onClick={() => setActiveTab('Recruiter Agent')}
-            >
-                Recruiter Agent
-            </div>
-            <div
-                style={{ ...styles.tab, ...(activeTab === 'Hiring Manager Agent' ? styles.activeTab : {}) }}
-                onClick={() => setActiveTab('Hiring Manager Agent')}
-            >
-                Hiring Manager Agent
-            </div>
-        </div>
-
-        <div style={styles.tabContent}>
-
-        {activeTab === 'Summary' && (
-        <div style={{ height: '400px', width: '100%', marginTop: '20px' }}>
-            <ResponsiveContainer width="100%" height="100%">
-            <RadarChart outerRadius={150} data={buildRadarData()}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="agent" />
-                <PolarRadiusAxis angle={30} domain={[0, 10]} />
-                <Radar name="Evaluation" dataKey="score" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-            </RadarChart>
-            </ResponsiveContainer>
-        </div>
-        )}
-
-          {activeTab === 'Recruiter Agent' && (
-            <>
-              <div style={{ ...styles.bannerBase, ...getBannerStyle(recruiterDecision) }}>
-                Final Recommendation: {recruiterDecision}
-              </div>
-              <div style={styles.agentEvaluationBox}>
-                {parsedRecruiter.map((section, idx) => (
-                  <div key={idx} style={styles.sectionCard}>
-                    <h4 style={styles.sectionTitle}>{section.title}</h4>
-                    <p style={styles.sectionContent}>{section.content}</p>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-
-            {activeTab === 'Hiring Manager Agent' && (
-            <>
-                <div style={{ ...styles.bannerBase, ...getBannerStyle(managerDecision) }}>
-                Final Recommendation: {managerDecision}
-                </div>
-                {renderDebateButton()}
-                <div style={styles.agentEvaluationBox}>
-                {parsedHiringManager.map((section, idx) => (
-                    <div key={idx} style={styles.sectionCard}>
-                    <h4 style={styles.sectionTitle}>{section.title}</h4>
-                    <p style={styles.sectionContent}>{section.content}</p>
-                    </div>
-                ))}
-                </div>
-            </>
-            )}
-            {renderDebateModal()}
-        </div>
-      </div>
-    );
-  };
-
   const parseEvaluation = (text) => {
     if (!text) return [];
 
@@ -332,6 +122,23 @@ const Matches = () => {
 
     return sections;
   };
+
+  <AgentTabs
+    matchDetails={matchDetails}
+    activeTab={activeTab}
+    setActiveTab={setActiveTab}
+    parsedRecruiter={parseEvaluation(matchDetails?.recruiter_agent)}
+    parsedHiringManager={parseEvaluation(matchDetails?.hiring_manager_agent)}
+    parseEvaluation={parseEvaluation}
+    styles={styles}
+    handleViewDebate={() => {
+      setDebateData(matchDetails?.debate_transcript);
+      setDebateOpen(true);
+    }}
+    debateData={debateData}
+    debateOpen={debateOpen}
+    setDebateOpen={setDebateOpen}
+  />
 
   return (
     <div style={{ display: 'flex', padding: '20px', height: 'calc(100vh - 80px)' }}>
@@ -378,7 +185,22 @@ const Matches = () => {
 
       {/* Right side: Agent Tabs */}
       <div style={{ width: '70%', background: 'rgba(255,255,255,0.8)', borderRadius: '16px', backdropFilter: 'blur(12px)', padding: '25px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', overflowY: 'auto' }}>
-        {renderAgentTabs()}
+        <AgentTabs
+          matchDetails={matchDetails}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          parsedRecruiter={parseEvaluation(matchDetails?.recruiter_agent)}
+          parsedHiringManager={parseEvaluation(matchDetails?.hiring_manager_agent)}
+          parseEvaluation={parseEvaluation}
+          styles={styles}
+          handleViewDebate={() => {
+            setDebateData(matchDetails?.debate_transcript);
+            setDebateOpen(true);
+          }}
+          debateData={debateData}
+          debateOpen={debateOpen}
+          setDebateOpen={setDebateOpen}
+        />
       </div>
     </div>
   );
@@ -581,5 +403,26 @@ tabContent: {
       background: "#f3e5f5",           /* light purple */
       color: "#4a148c",
     },
+    bentoBox: {
+      display: 'flex',
+      gap: '20px',
+      alignItems: 'stretch',
+      justifyContent: 'space-between',
+      marginTop: '20px'
+    },
+    bentoLeft: {
+      flex: 2,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+    },
+    bentoRight: {
+      flex: 1,
+      minWidth: '300px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
+    
   };
 export default Matches;

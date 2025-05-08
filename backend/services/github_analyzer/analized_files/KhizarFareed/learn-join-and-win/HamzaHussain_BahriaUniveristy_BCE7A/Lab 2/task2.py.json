@@ -1,0 +1,4 @@
+{
+  "file": "HamzaHussain_BahriaUniveristy_BCE7A/Lab 2/task2.py",
+  "result": "{\n   \"Java\":  {\"depth\": 8, \"coverage\": true},\n   \"Python\":  {\"depth\": 7, \"coverage\": true},\n   \"C++\":  {\"depth\": 5, \"coverage\": true},\n   \"Regex\":  {\"depth\": 7, \"coverage\": true},\n   \"Error Handling\":  {\"depth\": 6, \"coverage\": true},\n   \"Data Structures\":  {\"depth\": 7, \"coverage\": true}\n}\n\n### EXPLANATION:\nJava is used in this function for object-oriented programming.\nPython is used for the looping and conditional statements.\nC++ is used for advanced programming with data structures.\nRegex is used for matching regular expressions.\nError handling is demonstrated with a try-except block, and data structures are used for efficient data storage and manipulation.\n\n---"
+}

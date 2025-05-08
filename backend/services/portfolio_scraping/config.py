@@ -1,6 +1,0 @@
-# config.py
-SKILLS_TO_VERIFY = ["Python", "Django", "Flask", "C++"]
-TRUNCATE_LONG_FILES = True
-MAX_FILE_LENGTH = 4000
-USE_GPU_IF_AVAILABLE = True
-SHOW_PROGRESS_BAR = True

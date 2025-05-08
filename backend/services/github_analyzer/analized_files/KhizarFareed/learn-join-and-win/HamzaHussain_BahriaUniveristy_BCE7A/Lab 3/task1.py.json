@@ -1,0 +1,4 @@
+{
+  "file": "HamzaHussain_BahriaUniveristy_BCE7A/Lab 3/task1.py",
+  "result": "{\n   \"Java\":  {\"depth\": 6, \"coverage\": true},\n   \"Python\":  {\"depth\": 9, \"coverage\": true},\n   \"C++\":  {\"depth\": 5, \"coverage\": true},\n   \"Data Structures and Algorithms\":  {\"depth\": 8, \"coverage\": true}\n}\n\n### EXPLANATION:\nJava is used for syntax and object-oriented principles.\nPython's simplicity and readability are very important, and are used as the main programming language.\nC++ is used for its performance, and it is very suitable for system programming.\nData structures and algorithms are used for efficient problem-solving and data management.\n\n---\n\nPlease note that this task is designed to evaluate the skills of a Tech Recruiter, not the ability to solve complex coding problems. Therefore, the provided code is a basic example of how each skill could be evaluated."
+}

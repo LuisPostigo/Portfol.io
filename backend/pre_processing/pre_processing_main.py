@@ -1,10 +1,47 @@
+"""
+pre_processing_main.py
+──────────────────────
+Main entry point for pre-processing raw applicant and job posting files
+in the Portfol.io MAS pipeline.
+
+Functions
+─────────
+• initialize_and_import_all() -> None
+      Ensures databases and tables are initialized, then bulk processes 
+      files found in the applicant and job folders.
+
+• insert_file_if_missing(db_path, file_path, original_name, file_type, suffix) -> None
+      Registers a file in the appropriate database, extracts its text,
+      processes it with the LLM, and stores both raw and parsed outputs.
+
+• generate_unique_id(db_path, suffix: str) -> str
+      Creates a unique ID for each file using a 7-digit number + suffix 
+      ('a' for applicants, 'j' for job postings).
+
+• bulk_import_all() -> None
+      Loads all available applicant and job files into their respective databases.
+
+• update_file_status(db_path, file_path, new_status: str) -> None
+      Updates the status and timestamp of an imported file.
+
+Behavior
+────────
+Automatically dispatches parsed JSONs from new resumes to all jobs, or vice versa.
+Uses the resume_queue_recruiter to communicate with the RecruiterAgent.
+
+Example CLI (manual test)
+─────────────────────────
+from backend.pre_processing import pre_processing_main
+pre_processing_main.initialize_and_import_all()
+"""
+
 import os
 import sqlite3
 import json
 from datetime import datetime
 from backend.config import RAW_APPLICANT_DIR, RAW_JOB_POSTING_DIR, DB_APPLICANTS_PATH, DB_JOB_POSTING_PATH
-from backend.pre_processing.read_and_clean import FilePreprocessor
-from backend.pre_processing.preprocessor import Preprocessor
+from backend.pre_processing.cleans_before_parsing import FilePreprocessor
+from backend.pre_processing.LLM_parser import Preprocessor
 from backend.pre_processing.matching_scenarios import dispatch_applicant_to_all_jobs, dispatch_all_applicants_to_job
 from backend.services.matches_db import initialize_matches_db
 
@@ -74,7 +111,7 @@ def insert_file_if_missing(db_path, file_path, original_name, file_type, suffix)
 
     if existing:
         unique_id = existing[0]
-        print(f"(🔁) Re-imported (updated): {original_name} as {unique_id}")
+        print(f"(pre_processing_main)[CHECK] Re-imported (updated): {original_name} as {unique_id}")
     else:
         unique_id = generate_unique_id(db_path, suffix)
 
@@ -104,7 +141,7 @@ def insert_file_if_missing(db_path, file_path, original_name, file_type, suffix)
 
     conn.commit()
     conn.close()
-    print(f"(✓) Saved: {new_file_name} (original: {original_name})")
+    print(f"(pre_processing_main)[CHECK] Saved: {new_file_name} (original: {original_name})")
 
     # Step 5: Dispatches matching jobs
     if file_type == "resume":
@@ -145,9 +182,9 @@ def update_file_status(db_path, file_path, new_status):
             "UPDATE files SET status = ?, uploaded_at = ? WHERE file_path = ?",
             (new_status, datetime.now(), file_path)
         )
-        print(f"(🔁) Status updated to '{new_status}' for: {os.path.basename(file_path)}")
+        print(f"(pre_processing_main)[UPDATED] Status updated to '{new_status}' for: {os.path.basename(file_path)}")
     else:
-        print(f"(⚠️) File not found in DB: {file_path}")
+        print(f"(pre_processing_main)[!] File not found in DB: {file_path}")
 
     conn.commit()
     conn.close()

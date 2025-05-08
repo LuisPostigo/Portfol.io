@@ -4,13 +4,13 @@ import re
 import pika
 from llama_cpp import Llama
 
-from backend.config import MODEL_DIR
+from backend.config import MODEL_DIR, FOUNDATION_MODEL
 from backend.services.matches_db import save_match_result
 from backend.services.AgentBase import AgentBase
 from backend.services.DebateManager import DebateManager
 
-class MistralRecruiterAgent(AgentBase):
-    def __init__(self, model_path=os.path.join(MODEL_DIR, "mistral-7b-instruct-v0.1-q4_k_m.gguf"),
+class FirstRecruiterAgent(AgentBase):
+    def __init__(self, model_path=os.path.join(MODEL_DIR, FOUNDATION_MODEL),
                  queue_in='resume_queue_recruiter', queue_out='agent_response_queue'):
         super().__init__(expected_agent_name="RecruiterAgent")
         self.queue_in = queue_in
@@ -28,7 +28,7 @@ class MistralRecruiterAgent(AgentBase):
 
         self._setup_rabbitmq()
 
-        # ✨ Create DebateManager instance for Recruiter
+        # Create DebateManager instance for Recruiter
         self.debate_manager = DebateManager(
             llama_model=self.llm,
             channel=self.channel,
@@ -94,7 +94,7 @@ Now, following the same style and brevity, write your evaluation below:
 
     def _evaluate(self, job_posting, applicant_info):
         prompt = self._generate_prompt(job_posting, applicant_info)
-        print("🧠 Prompt sent to Llama:\n", prompt)
+        print("(first_recruiter_agent)[LLM] Prompt sent to Llama:\n", prompt)
 
         response = self.llm.create_completion(prompt=prompt, max_tokens=400, temperature=0.4)
         raw_output = response['choices'][0]['text'].strip()
@@ -108,18 +108,18 @@ Now, following the same style and brevity, write your evaluation below:
         raw_output = re.sub(r'-{3,}', '', raw_output)
         raw_output = raw_output.lstrip()
 
-        print("\n🧹 Cleaned Evaluation:\n", raw_output)
+        print("\n(first_recruiter_agent)[LLM] Cleaned Evaluation:\n", raw_output)
 
         match = re.search(r'Final recommendation:\s*\*\*(Yes|No)\*\*', raw_output, re.IGNORECASE)
         flag = match.group(1) if match else "Unknown"
-        print("✅ Final Decision:", flag)
+        print("(first_recruiter_agent)[CHECK] Final Decision:", flag)
 
         return {"evaluation": raw_output, "flag": flag}
 
     def _handle_message(self, ch, method, properties, body):
         try:
             message = self.parse_message(body)
-            print("🐞 [RecruiterAgent] Received message:", message)
+            print("(first_recruiter_agent)[DEBATE] [RecruiterAgent] Received message:", message)
             if not message:
                 return
 
@@ -133,10 +133,10 @@ Now, following the same style and brevity, write your evaluation below:
             elif msg_type == "debate_context":
                 self.debate_manager.handle_debate_turn(message, agent_name="RecruiterAgent")
             else:
-                print(f"⚠️ Ignored unknown message type: {msg_type}")
+                print(f"(first_recruiter_agent)[!] Ignored unknown message type: {msg_type}")
 
         except Exception as e:
-            print(f"❌ Error processing message: {e}")
+            print(f"(first_recruiter_agent)[ERROR] Error processing message: {e}")
 
     def _handle_resume(self, message):
         context = message["context"]
@@ -161,7 +161,7 @@ Now, following the same style and brevity, write your evaluation below:
             routing_key=self.queue_out,
             body=json.dumps(response_msg)
         )
-        print(f"📤 Response sent for applicant {applicant_id}")
+        print(f"(first_recruiter_agent)[MESSAGE] Response sent for applicant {applicant_id}")
 
         if job_id != "unknown":
             try:
@@ -172,11 +172,11 @@ Now, following the same style and brevity, write your evaluation below:
                     agent_opinion=cleaned_evaluation
                 )
             except Exception as db_error:
-                print(f"❌ Error saving to matches.db: {db_error}")
+                print(f"(first_recruiter_agent)[X] Error saving to matches.db: {db_error}")
 
-        hiring_manager_msg = {
+        portfolio_msg = {
             "type": "mcp_context",
-            "target_agent": "HiringManagerAgent",
+            "target_agent": "PortfolioAnalyzerAgent",
             "context": {
                 "input": applicant_info,
                 "job": job_posting
@@ -185,16 +185,34 @@ Now, following the same style and brevity, write your evaluation below:
             "job_id": job_id
         }
 
-        self.channel.queue_declare(queue='resume_queue_hiring_manager')
+        self.channel.queue_declare(queue='resume_queue_portfolio')
         self.channel.basic_publish(
             exchange='',
-            routing_key='resume_queue_hiring_manager',
-            body=json.dumps(hiring_manager_msg)
+            routing_key='resume_queue_portfolio',
+            body=json.dumps(portfolio_msg)
         )
-        print(f"📨 HiringManagerAgent notified for applicant {applicant_id}")
+        print(f"(first_recruiter_agent)[MESSAGE] PortfolioAnalyzerAgent notified for applicant {applicant_id}")
+
+        technical_lead_msg = {
+            "type": "agent_response",
+            "source": "RecruiterAgent",       
+            "target_agent": "DecisionAgent",
+            "applicant_id": applicant_id,
+            "job_id": job_id,
+            "flag": result["flag"],
+            "message": cleaned_evaluation
+        }
+
+        self.channel.queue_declare(queue='agent_response_queue')
+        self.channel.basic_publish(
+            exchange='',
+            routing_key='agent_response_queue',
+            body=json.dumps(technical_lead_msg)
+        )
+        print(f"(first_recruiter_agent)[FORWARD] Sent to FourthTechnicalLeadAgent: applicant {applicant_id}")
 
     def start(self):
-        print(f"🤖 MistralRecruiterAgent (Local) is listening on queue: {self.queue_in}")
+        print(f"🤖 FirstRecruiterAgent (Local) is listening on queue: {self.queue_in}")
         self.channel.basic_consume(
             queue=self.queue_in,
             on_message_callback=self._handle_message,
@@ -203,5 +221,5 @@ Now, following the same style and brevity, write your evaluation below:
         self.channel.start_consuming()
 
 if __name__ == "__main__":
-    agent = MistralRecruiterAgent()
+    agent = FirstRecruiterAgent()
     agent.start()

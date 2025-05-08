@@ -1,3 +1,30 @@
+#!/usr/bin/env python3
+"""
+matching_scenarios.py
+─────────────────────
+RabbitMQ dispatch helpers used by the MAS pipeline.
+
+Functions
+─────────
+• dispatch_applicant_to_all_jobs(applicant_id: int) -> None
+      Pushes a single applicant’s parsed résumé-JSON to *every* job posting
+      that already has parsed JSON in DB_JOB_POSTING_PATH.
+
+• dispatch_all_applicants_to_job(job_id: int) -> None
+      Pushes *every* stored applicant résumé-JSON to one newly-posted job.
+
+Both functions publish MCP-style messages on the
+`resume_queue_recruiter` queue and expect the RecruiterAgent to listen
+there.
+
+Example CLI (manual test)
+─────────────────────────
+python -m backend.pre_processing.matching_scenarios.matching_scenarios  \
+       --applicant 42
+python -m backend.pre_processing.matching_scenarios.matching_scenarios  \
+       --job 17
+"""
+
 import pika
 import sqlite3
 import json
@@ -7,7 +34,7 @@ def dispatch_applicant_to_all_jobs(applicant_id):
     """
     Dispatches a new applicant to be evaluated against all available job postings.
     """
-    print(f"📨 Dispatching Applicant {applicant_id} to all jobs...")
+    print(f"(matching_scenarios)[MESSAGE] Dispatching Applicant {applicant_id} to all jobs...")
 
     # Connect to RabbitMQ
     connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
@@ -22,7 +49,7 @@ def dispatch_applicant_to_all_jobs(applicant_id):
     conn.close()
 
     if not result or not result[0]:
-        print(f"(⚠️) No parsed JSON for applicant {applicant_id}")
+        print(f"(matching_scenarios)[!] No parsed JSON for applicant {applicant_id}")
         return
 
     applicant_data = json.loads(result[0])
@@ -52,7 +79,7 @@ def dispatch_applicant_to_all_jobs(applicant_id):
             routing_key='resume_queue_recruiter',
             body=json.dumps(message)
         )
-        print(f"📡 Sent applicant {applicant_id} for job {job_id}")
+        print(f"(matching_scenarios)[MESSAGE] Sent applicant {applicant_id} for job {job_id}")
 
     connection.close()
 
@@ -60,7 +87,7 @@ def dispatch_all_applicants_to_job(job_id):
     """
     Dispatches all existing applicants to be evaluated against a new job posting.
     """
-    print(f"📨 Dispatching all applicants for Job {job_id}...")
+    print(f"(matching_scenarios)[MESSAGE] Dispatching all applicants for Job {job_id}...")
 
     # Connect to RabbitMQ
     connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
@@ -75,7 +102,7 @@ def dispatch_all_applicants_to_job(job_id):
     conn.close()
 
     if not result or not result[0]:
-        print(f"(⚠️) No parsed JSON for job {job_id}")
+        print(f"(matching_scenarios)[!] No parsed JSON for job {job_id}")
         return
 
     job_data = json.loads(result[0])

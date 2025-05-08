@@ -1,0 +1,4 @@
+{
+  "file": "HamzaHussain_BahriaUniveristy_BCE7A/Lab 3/task2.py",
+  "result": "The code is well-written and follows Python syntax. It converts binary numbers to decimal and checks if they can be divided by 5. The code uses a list comprehension and Python's built-in `int` function to achieve this. It also prints the result."
+}

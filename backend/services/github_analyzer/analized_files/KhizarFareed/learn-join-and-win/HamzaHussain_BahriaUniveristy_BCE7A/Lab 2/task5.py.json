@@ -1,0 +1,4 @@
+{
+  "file": "HamzaHussain_BahriaUniveristy_BCE7A/Lab 2/task5.py",
+  "result": "### JSON EVAL:\n{\n   \"String Manipulation\":  {\"depth\": 8, \"coverage\": true},\n   \"For Loop\":  {\"depth\": 4, \"coverage\": true}\n}\n\n### EXPLANATION:\nThe function `count_ant_strings()` counts the number of substrings 'at' in the given string. It does this by iterating over the string and checking each character, and comparing it to the next one to the one two positions to the right of it. If the condition is met, it increments a counter.\n\nThe for loop is used to iterate over each character in the string. The range function is used to iterate up to the second-to-last character of the string. The indexing operation is used to get each character and the one two positions to the right of it.\n\nThe code demonstrates string manipulation and for loop, which are fundamental skills for any programmer."
+}

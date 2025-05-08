@@ -45,6 +45,17 @@ def wipe_directory(directory_path):
     except Exception as e:
         print(f"⚠️ Failed to wipe {directory_path}: {e}")
 
+"""
+def wipe_analyzer_data():
+    ANALYSIS_DIR = os.path.join("backend", "services", "github_analyzer", "analized_files")
+    for entry in os.listdir(ANALYSIS_DIR):
+        entry_path = os.path.join(ANALYSIS_DIR, entry)
+        if os.path.isfile(entry_path) and entry != "empty.txt":
+            os.remove(entry_path)
+        elif os.path.isdir(entry_path):
+            shutil.rmtree(entry_path)
+"""
+
 if __name__ == "__main__":
     # Wipe databases
     wipe_table(DB_APPLICANTS_PATH, "files")
@@ -54,3 +65,6 @@ if __name__ == "__main__":
     # Wipe uploaded files
     wipe_directory(RAW_APPLICANT_DIR)
     wipe_directory(RAW_JOB_POSTING_DIR)
+
+    # Wipe analyzer data
+    #wipe_analyzer_data()

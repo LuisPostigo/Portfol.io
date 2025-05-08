@@ -1,0 +1,4 @@
+{
+  "file": "HamzaHussain_BahriaUniveristy_BCE7A/Lab 2/task4.py",
+  "result": "{\n   \"Array Manipulation\":  {\"depth\": 9, \"coverage\": true},\n   \"Error Handling\":  {\"depth\": 5, \"coverage\": true}\n}\n\n### EXPLANATION:\nThe function takes an array as input and returns the difference between the maximum and minimum elements.\nIt handles the case where the array length is less than 1 and includes error handling for an empty array.\n\n---"
+}

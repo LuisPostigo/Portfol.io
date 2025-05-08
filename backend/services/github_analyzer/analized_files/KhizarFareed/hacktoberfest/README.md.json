@@ -1,0 +1,4 @@
+{
+  "file": "README.md",
+  "result": "### JSON EVAL:\n{\n   \"Javascript\":  {\"depth\": 8, \"coverage\": true},\n   \"GitHub\":  {\"depth\": 7, \"coverage\": true},\n   \"Markdown\":  {\"depth\": 6, \"coverage\": true}\n}\n\n### EXPLANATION:\nJavaScript is used for client-side scripting.\nGitHub is used to version control and collaboration.\nMarkdown is used to format the README file."
+}

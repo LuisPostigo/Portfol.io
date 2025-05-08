@@ -1,0 +1,4 @@
+{
+  "file": "HamzaHussain_BahriaUniveristy_BCE7A/Lab2_String, Variables & Conditional Statements/task4.py",
+  "result": "{\n   \"Python\":  {\"depth\": 4, \"coverage\": true},\n   \"Algorithm\":  {\"depth\": 5, \"coverage\": true}\n}\n\nEXPLANATION:\nThe code is using Python's built-in functions min and max to find the minimum and maximum values in a list. The difference between the maximum and minimum values is then calculated and returned. The code is well-structured and uses Python's built-in functions effectively."
+}

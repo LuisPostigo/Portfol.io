@@ -1,0 +1,4 @@
+{
+  "file": "HamzaHussain_BahriaUniveristy_BCE7A/Lab2_String, Variables & Conditional Statements/task5.py",
+  "result": "1. JSON EVAL:\n{\n   \"Python\": {\"depth\": 7, \"coverage\": true},\n   \"For Loop\": {\"depth\": 6, \"coverage\": true},\n   \"Arithmetic\": {\"depth\": 5, \"coverage\": true}\n}\n\n2. Explanation:\nIn this Python function, we iterate through the string only checking for occurrences of 'a' followed by 't'. The count is incremented for each such occurrence.\n\n3. Code:\n\ndef count_ant_strings(input_string):\n    count = 0\n\n    for i in range(len(input_string) - 2):\n        if input_string[i] == 'a' and input_string[i + 2] == 't':\n            count += 1\n\n    return count\n\n\ninput_string = \"Antandart\"\nresult = count_ant_strings(input_string)\nprint(\"String:\", input_string)\nprint(\"Output: count =\", result)\n\n---"
+}

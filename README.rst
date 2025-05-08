@@ -41,6 +41,11 @@ The MAS is composed of six primary agents, each with a specialized role:
 - **Decision Maker Agent:** Aggregates agent evaluations using multi-criteria decision-making.
 
 Each agent acts autonomously and interacts using a shared communication protocol and ontology, following best practices for agent-to-agent collaboration.
+The current models being used have a limited context window of 4096 tokens, which is a constraint for the system. This, can be mitigated by using a memory agent, which can store the information of the previous interactions and provide it to the agents when needed, which is a pending work.
+You can also change the models to use the ones that you prefer, but the system is designed to work with the ones mentioned in the architecture section, so some refinements to the prompts may be needed. For such I recommend either using the following documentation:
+
+- https://services.google.com/fh/files/misc/gemini-for-google-workspace-prompting-guide-101.pdf
+- Or directly from the documentation of the models you are using. Most of them can be found on Hugging Face.
 
 Architecture
 -------------
@@ -123,3 +128,14 @@ License
 -------
 
 For academic purposes only. All rights reserved by the authors.
+
+Getting Started
+------------------
+
+In order to access applicants portfolios, you need to have a GitHub token. You can create one by following the instructions in the GitHub documentation.
+https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic
+
+
+Downloading the models:
+
+deepseek-coder-1.3b-instruct.Q4_K_M: https://huggingface.co/TheBloke/deepseek-coder-1.3b-instruct-GGUF/blob/main/deepseek-coder-1.3b-instruct.Q4_K_M.gguf

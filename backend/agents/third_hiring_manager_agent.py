@@ -4,13 +4,13 @@ import re
 import pika
 from llama_cpp import Llama
 
-from backend.config import MODEL_DIR
+from backend.config import MODEL_DIR, FOUNDATION_MODEL
 from backend.services.matches_db import save_match_result, load_recruiter_opinion
 from backend.services.AgentBase import AgentBase
 from backend.services.DebateManager import DebateManager
 
 class ThirdHiringManagerAgent(AgentBase):
-    def __init__(self, model_path=os.path.join(MODEL_DIR, "mistral-7b-instruct-v0.1-q4_k_m.gguf"),
+    def __init__(self, model_path=os.path.join(MODEL_DIR, FOUNDATION_MODEL),
                  queue_in='resume_queue_hiring_manager', queue_out='agent_response_queue'):
         super().__init__(expected_agent_name="HiringManagerAgent")
 
@@ -162,27 +162,39 @@ Now, following the same style and level of detail, write your evaluation below:
             self.debate_manager.start_debate(applicant_id, job_id, recruiter_result, manager_result)
         else:
             print("✅ Agreement detected. No debate needed.")
-            self.publish_final_decision(applicant_id, manager_flag, manager_result["evaluation"], job_id)
+            self.publish_final_decision(applicant_id, manager_flag, manager_result["evaluation"], job_id, applicant_info, job_posting)
 
     def _handle_debate(self, message):
         self.debate_manager.handle_debate_turn(message, agent_name="HiringManagerAgent")
 
-    def publish_final_decision(self, applicant_id, flag, message, job_id):
-        response_msg = {
-            "type": "agent_response",
-            "source": "HiringManagerAgent",
-            "target_agent": "DecisionAgent",
+    def publish_final_decision(self, applicant_id, flag, message, job_id, applicant_info, job_posting):
+
+        save_match_result(
+            applicant_id=applicant_id,
+            job_id=job_id,
+            agent_name="hiring_manager_agent",
+            agent_opinion=message
+        )
+        print(f"💾 Hiring Manager opinion saved for applicant {applicant_id}")
+
+        technical_lead_msg = {
+            "type": "mcp_context",
+            "target_agent": "TechnicalLeadAgent",
+            "context": {
+                "input": applicant_info,
+                "job": job_posting
+            },
             "applicant_id": applicant_id,
-            "flag": flag,
-            "message": message
+            "job_id": job_id
         }
 
+        self.channel.queue_declare(queue='resume_queue_technical_lead')
         self.channel.basic_publish(
             exchange='',
-            routing_key=self.queue_out,
-            body=json.dumps(response_msg)
+            routing_key='resume_queue_technical_lead',
+            body=json.dumps(technical_lead_msg)
         )
-        print(f"📤 Final decision published for applicant {applicant_id}")
+        print(f"[FORWARD] Sent to TechnicalLeadAgent for applicant {applicant_id}")
 
     def start(self):
         print(f"🤖 ThirdHiringManagerAgent listening on queue {self.queue_in}")

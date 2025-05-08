@@ -1,3 +1,41 @@
+"""
+cleans_before_parsing.py
+────────────────────────
+Handles file-based pre-processing for the Portfol.io MAS pipeline, 
+including raw text extraction and cleaning from uploaded applicant 
+and job posting documents.
+
+Class
+─────
+• FilePreprocessor
+    - Manages folder structure for raw inputs.
+    - Extracts and cleans text from PDF (and future DOCX) files.
+    - Normalizes spacing and formatting for downstream LLM parsing.
+
+Methods
+───────
+• clean_text(text: str) -> str
+      Removes excessive blank lines to standardize formatting for LLM input.
+
+• extract_text_from_pdf(pdf_path: str) -> str | None
+      Uses PyMuPDF (`fitz`) to extract text from PDF files and then cleans it.
+
+• process_folder(subfolder_name: str) -> dict[str, str]
+      Processes all files in a given folder (`applicants` or `jobPostings`), 
+      returning a dictionary of filename to cleaned text.
+
+• process_all() -> list[dict]
+      Iterates over both applicant and job posting folders, extracting, cleaning,
+      and tagging each file with its type and filename.
+
+Test CLI
+────────
+Run the script directly to test file extraction and cleaning from all raw uploads:
+
+    python -m backend.pre_processing.cleans_before_parsin
+
+Returns a list of dictionaries with keys: 'filename', 'file_type', 'text'.
+"""
 import os
 import logging
 import fitz
@@ -79,7 +117,7 @@ class FilePreprocessor:
                 if filename.endswith('.pdf'):
                     text = self.extract_text_from_pdf(file_path)
                 elif filename.endswith('.docx'):
-                    text = ""  # or you can implement docx later
+                    text = ""  # as of now, we only handle PDF, but you can add handling for DOCX here
                 else:
                     with open(file_path, 'r', encoding='utf-8') as f:
                         text = f.read()
@@ -93,8 +131,11 @@ class FilePreprocessor:
                     })
 
         return results
+    
+#######################################################################################
+#----------------------------------    Test run    -----------------------------------#
+#######################################################################################
 
-# Optional manual run
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     preprocessor = FilePreprocessor()

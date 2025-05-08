@@ -1,0 +1,4 @@
+{
+  "file": "DanialAzeem_BahriaUniversity_BCE7A/Lab2/task1.py",
+  "result": "{\n   \"Java\":  {\"depth\": 5, \"coverage\": true},\n   \"Python\":  {\"depth\": 8, \"coverage\": true},\n   \"Regex\":  {\"depth\": 6, \"coverage\": true}\n}\n\n### EXPLANATION:\nThe program first takes three numbers as input from the user. It then checks if any of the numbers are between 13 and 19 (inclusive), and if so, it changes those numbers to 0.\n\nThe sum of the three numbers is then calculated and printed.\n\nThe language used in this program is Java, with Python for the user input and regular expression for the if-statement check."
+}

@@ -1,0 +1,4 @@
+{
+  "file": "DanialAzeem_BahriaUniversity_BCE7A/Lab3/task2.py",
+  "result": "{\n   \"Python\":  {\"depth\": 8, \"coverage\": true},\n   \"Regular Expressions\":  {\"depth\": 6, \"coverage\": true},\n   \"Binary Operations\":  {\"depth\": 6, \"coverage\": true},\n   \"Control Structures\":  {\"depth\": 5, \"coverage\": true}\n}\n\nThe code is well written and follows Python syntax. Regular expressions are used to parse the input, and binary operations are performed on the binary strings. Control structures are used to iterate over the binary numbers and filter those divisible by 5."
+}

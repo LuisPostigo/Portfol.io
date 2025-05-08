@@ -1,0 +1,4 @@
+{
+  "file": "HamzaHussain_BahriaUniveristy_BCE7A/Lab2_String, Variables & Conditional Statements/task2.py",
+  "result": "{\n   \"Java\": {\"depth\": 7, \"coverage\": true},\n   \"Python\": {\"depth\": 8, \"coverage\": true},\n   \"Regular Expressions\": {\"depth\": 6, \"coverage\": true},\n   \"Error Handling\": {\"depth\": 5, \"coverage\": true},\n   \"String Manipulation\": {\"depth\": 5, \"coverage\": true},\n   \"Object-Oriented Programming\": {\"depth\": 8, \"coverage\": true}\n}\n\n### EXPLANATION:\nThe code is written in Java, Python, and regular expressions. It uses built-in methods and principles of object-oriented programming. It counts the number of lowercase, uppercase, digits, and special symbols in the input string. It also handles errors and uses string manipulation principles."
+}

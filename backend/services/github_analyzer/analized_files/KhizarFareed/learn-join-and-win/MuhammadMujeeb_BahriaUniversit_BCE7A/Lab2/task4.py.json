@@ -1,0 +1,4 @@
+{
+  "file": "MuhammadMujeeb_BahriaUniversit_BCE7A/Lab2/task4.py",
+  "result": "{\n   \"Python\":  {\"depth\": 7, \"coverage\": true},\n   \"NumPy\":  {\"depth\": 6, \"coverage\": true},\n   \"SciPy\":  {\"depth\": 5, \"coverage\": true},\n   \"Matplotlib\":  {\"depth\": 5, \"coverage\": true},\n   \"Pandas\":  {\"depth\": 7, \"coverage\": true},\n   \"Sklearn\":  {\"depth\": 5, \"coverage\": true}\n}\n\nThe code uses Python's built-in functions to calculate the difference between the maximum and minimum values in a list. Additionally, it also uses libraries such as NumPy for numerical computations, SciPy for scientific computations, Matplotlib and Pandas for data manipulation, and Sklearn for machine learning. The code is well-organized and well-commented, demonstrating the use of different Python libraries and features."
+}

@@ -1,0 +1,4 @@
+{
+  "file": "contact.css",
+  "result": "{\n   \"Python\":  {\"depth\": 4, \"coverage\": false},\n   \"JAVA\":  {\"depth\": 4, \"coverage\": false},\n   \"Regex\":  {\"depth\": 4, \"coverage\": true},\n   \"SQL\":  {\"depth\": 4, \"coverage\": false},\n   \"Object-Oriented Programming\":  {\"depth\": 6, \"coverage\": true},\n   \"Error Handling\":  {\"depth\": 6, \"coverage\": true},\n   \"HTML/CSS\":  {\"depth\": 7, \"coverage\": true},\n   \"JavaScript\":  {\"depth\": 7, \"coverage\": true},\n   \"Tasa-regular\":  {\"depth\": 8, \"coverage\": true},\n   \"Tasa-bold\":  {\"depth\": 8, \"coverage\": true},\n   \"rgba\":  {\"depth\": 8, \"coverage\": true},\n   \"box-shadow\":  {\"depth\": 8, \"coverage\": true},\n   \"Tasa-regular\":  {\"depth\": 8,"
+}

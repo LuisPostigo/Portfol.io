@@ -1,0 +1,4 @@
+{
+  "file": "src/App.js",
+  "result": "{\n   \"JavaScript\": {\"depth\": 9, \"coverage\": true},\n   \"React\": {\"depth\": 9, \"coverage\": true},\n   \"CSS\": {\"depth\": 6, \"coverage\": true},\n   \"FetchAPI\": {\"depth\": 7, \"coverage\": true},\n   \"StateManagement\": {\"depth\": 7, \"coverage\": true},\n   \"React-Router\": {\"depth\": 7, \"coverage\": true},\n   \"Git\": {\"depth\": 8, \"coverage\": true},\n   \"Node\": {\"depth\": 9, \"coverage\": true},\n   \"Express\": {\"depth\": 9, \"coverage\": true},\n   \"MongoDB\": {\"depth\": 9, \"coverage\": true},\n   \"Heroku\": {\"depth\": 8, \"coverage\": true},\n   \"Docker\": {\"depth\": 9, \"coverage\": true},\n   \"AWS\": {\"depth\": 8, \"coverage\": true},\n   \"Python\": {\"depth\": 8, \"coverage\": true"
+}

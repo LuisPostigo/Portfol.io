@@ -1,0 +1,4 @@
+{
+  "file": "DaniaSami_BahriaUniversity_BCE7A/AI-Lab2/task5.py",
+  "result": "def ant_count(input_string):\n    match = re.findall(r'a[a-z]t', input_string)\n    \n    return len(match)\n\nstring = \"apt, alt, ant, act, art\"\nresult = ant_count(string)\nprint(f\"String: {string}\")\nprint(f\"Count = {result}\")\n\n---\n\n### JSON EVAL:\n{\n   \"Regular Expressions\":  {\"depth\": 7, \"coverage\": true},\n   \"Object-Oriented Programming\":  {\"depth\": 6, \"coverage\": true}\n}\n\n### EXPLANATION:\nRegular expressions are well-demonstrated here, as they are used to match specific patterns in strings.\nObject-oriented programming is used here, though the specific implementation of the classes and methods is not demonstrated.\n\n---"
+}

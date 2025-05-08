@@ -1,0 +1,4 @@
+{
+  "file": "DanialAzeem_BahriaUniversity_BCE7A/Lab2/task5.py",
+  "result": "{\n  \"Java\": {\"depth\": 10, \"coverage\": false},\n  \"Regular Expressions\": {\"depth\": 6, \"coverage\": true},\n  \"Strings\": {\"depth\": 5, \"coverage\": true}\n}\n\nEXPLANATION:\nThis Python function uses regular expressions to search for strings that start with 'a' followed by any lowercase letter, in the input string. The len() function is then used to count the number of matches."
+}

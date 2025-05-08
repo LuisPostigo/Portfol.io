@@ -1,0 +1,4 @@
+{
+  "file": "DanialAzeem_BahriaUniversity_BCE7A/Lab3/task1.py",
+  "result": "{\n   \"Python\":  {\"depth\": 8,  \"coverage\": true},\n   \"Loop Structures\":  {\"depth\": 6,  \"coverage\": true},\n   \"Recursion\":  {\"depth\": 5,  \"coverage\": false}  // not covered, but it's an important concept\n}\n\n### EXPLANATION:\nThe code uses nested loops to print a pyramid of asterisks.\nIt's a well-known concept in programming.\nRecursion is not covered in the provided code as it is not a primary function of the code snippet."
+}
